@@ -16,9 +16,9 @@ import Users from './pages/Admin/Admin-Users/Users';
 import AddBlogs from './pages/Admin/Admin-Routes/Admin-Blogs/AddBlogs';
 import AddTrip from './pages/Admin/Admin-Routes/Admin-Trip-Details/Trip-Add/AddTrip';
 import Bookings from './pages/Admin/Admin-Routes/Admin-Trip-Details/Bookings/Bookings';
-import Otp from './pages/Otp/Otp';
 import Profile from './pages/Profile/Profile';
 import Logout from './pages/Logout/Logout';
+import Otp from './pages/Otp/Otp';
 
 function App() {
   const [loading, setLoading] = useState(true);
