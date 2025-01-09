@@ -1,0 +1,137 @@
+import { createContext, useState, useEffect } from 'react';
+
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // If token exists, assume user is authenticated until we verify with API
+      setIsAuthenticated(true);
+      fetchUserData(); // Verify the token by fetching user data
+    } else {
+      setLoading(false); // No token, no need to fetch
+    }
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/me', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsAuthenticated(true);
+        setRole(data.user.role);
+      } else {
+        setIsAuthenticated(false);
+        setRole(null);
+      }
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+      setIsAuthenticated(false);
+      setRole(null);
+    } finally {
+      setLoading(false); // Done loading after the request
+    }
+  };
+
+  const storeTokenInLs = (data) => {
+    const token = data.jwtAccessToken; // Adjust according to your response structure
+    try {
+      localStorage.setItem('token', token);
+    } catch (error) {
+      console.error('Failed to store token in local storage:', error);
+    }
+  };
+
+  const login = async (email, password) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsAuthenticated(true);
+        setRole(data.role); // Assuming role is returned
+        storeTokenInLs(data); // Store token
+        return { success: true };
+      } else {
+        return { success: false, message: data.message || 'Login failed.' };
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      return { success: false, message: 'An error occurred. Please try again.' };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        setIsAuthenticated(false);
+        setRole(null);
+        localStorage.removeItem('token'); // Remove the token if stored
+        return { success: true };
+      } else {
+        return { success: false, message: 'Logout failed.' };
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+      return { success: false, message: 'An error occurred. Please try again.' };
+    }
+  };
+
+  const signup = async (formData) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsAuthenticated(true);
+        setRole(data.role); // Assuming role is returned
+        storeTokenInLs(data); // Store token
+        return { success: true, email: formData.email };
+      } else {
+        return { success: false, message: data.message || 'Signup failed.' };
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+      return { success: false, message: 'An error occurred. Please try again.' };
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Add a loading indicator while verifying token
+  }
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, role, login, logout, signup }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
