@@ -2,6 +2,7 @@ import { useState, useEffect,useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Profile from '../../assets/profile.jpg';
 import { AuthContext } from '../../context/AuthContext';
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const ProfilePage = () => {
     const [user, setUser] = useState(null);
@@ -15,7 +16,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/user/me', {
+                const response = await fetch(`${API_URL}/user/me`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -64,7 +65,7 @@ const ProfilePage = () => {
 
     const handleSaveChanges = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/user/${user.id}`, {
+            const response = await fetch(`${API_URL}/user/${user.id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -87,7 +88,7 @@ const ProfilePage = () => {
     const handleDeleteAccount = async () => {
         if (window.confirm('Are you sure you want to delete your account?')) {
             try {
-                const response = await fetch(`http://localhost:3000/api/user/${user.id}`, {
+                const response = await fetch(`${API_URL}/user/${user.id}`, {
                     method: 'DELETE',
                     credentials: 'include',
                 });

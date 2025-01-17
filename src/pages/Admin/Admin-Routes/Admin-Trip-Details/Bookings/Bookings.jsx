@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import Bill from '../Bill/Bill'; // Adjust the import path accordingly
 import ReactDOMServer from 'react-dom/server';
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const Trips = () => {
     const [trips, setTrips] = useState([]);
@@ -13,7 +14,7 @@ const Trips = () => {
         const fetchTrips = async () => {
             setLoading(true);
             try {
-                const response = await fetch('http://localhost:3000/api/trip/trips');
+                const response = await fetch(`${API_URL}/trip/trips`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch trips');
                 }

@@ -1,4 +1,6 @@
+import { ApiProvider } from '@reduxjs/toolkit/query/react';
 import { useState } from 'react';
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ const Contact = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/api/contact/addcontact', {
+      const response = await fetch(`${API_URL}/contact/addcontact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const Trip = () => {
     const [tripDetails, setTripDetails] = useState({
@@ -36,7 +37,7 @@ const Trip = () => {
         setSuccess('');
 
         try {
-            const response = await fetch('http://localhost:3000/api/trip/createTrips', {
+            const response = await fetch(`${API_URL}/trip/createTrips`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

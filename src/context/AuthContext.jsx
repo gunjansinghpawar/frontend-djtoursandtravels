@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+const API_URL = import.meta.env.BACKEND_PORT;
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/user/me', {
+      const response = await fetch(`${API_URL}/user/me`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:3000/api/user/login', {
+      const response = await fetch(`${API_URL}/user/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/user/logout', {
+      const response = await fetch(`${API_URL}/user/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (formData) => {
     try {
-      const response = await fetch('http://localhost:3000/api/user/register', {
+      const response = await fetch(`${API_URL}/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

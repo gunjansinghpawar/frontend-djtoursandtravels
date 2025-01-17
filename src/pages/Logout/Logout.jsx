@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const Logout = () => {
 
@@ -6,7 +7,7 @@ const Logout = () => {
     const handleLogout = async () => {
       try {
         // Make a POST request to the logout endpoint
-        const response = await fetch('http://localhost:3000/api/user/logout', {
+        const response = await fetch(`${API_URL}/user/logout`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import { useState } from "react";
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const Blogs = () => {
     const [title, setTitle] = useState(''); // Corresponds to blogTitle in the backend
@@ -32,7 +33,7 @@ const Blogs = () => {
         };
     
         try {
-            const response = await fetch('http://localhost:3000/api/blog/createBlog', {
+            const response = await fetch(`${API_URL}/blog/createBlog`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Set the correct header

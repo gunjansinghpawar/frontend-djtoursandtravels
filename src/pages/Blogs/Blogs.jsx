@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,7 +12,7 @@ const Blogs = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/blog/fetchAllBlogs');
+      const response = await fetch(`${API_URL}/blog/fetchAllBlogs`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+const API_URL = import.meta.env.BACKEND_PORT;
 
 const Otp = () => {
     const [otp, setOtp] = useState(new Array(6).fill(''));
@@ -22,7 +23,7 @@ const Otp = () => {
     const handleResend = async () => {
         // Implement OTP resend logic
         try {
-            const response = await fetch('http://localhost:3000/api/user/resendOtp', {
+            const response = await fetch(`${API_URL}/user/resendOtp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ const Otp = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:3000/api/user/verifyEmail', {
+            const response = await fetch(`${API_URL}/user/verifyEmail`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

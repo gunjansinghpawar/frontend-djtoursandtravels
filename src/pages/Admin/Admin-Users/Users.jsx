@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+const API_URL = import.meta.env.BACKEND_PORT;
 const Users = () => {
   const [contact, setContact] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +14,7 @@ const Users = () => {
     setLoading(true);
     setError(null); // Reset error before fetching
     try {
-      const response = await fetch('http://localhost:3000/api/contact/allContacts');
+      const response = await fetch(`${API_URL}/contact/allContacts`);
       if (!response.ok) {
         if (response.status === 404) {
           throw new Error('No contacts found.');
