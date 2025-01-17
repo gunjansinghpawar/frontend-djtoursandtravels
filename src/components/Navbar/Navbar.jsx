@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext'; // Adjust the path as necessary
 import Logo from '../../assets/logo.png';
@@ -6,8 +6,7 @@ import Profile from '../../assets/profile.jpg';
 
 const Navbar = () => {
     const { isAuthenticated, role } = useContext(AuthContext); // Access authentication state and role
-    console.log('isAuthenticated:', isAuthenticated);
-    console.log('role:', role);
+    const dropdownRef = useRef(null); // Reference to the admin dropdown
 
     // Function to collapse the navbar
     const onNavbarLinkClick = () => {
@@ -17,6 +16,22 @@ const Navbar = () => {
         }
     };
 
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                const dropdownElement = document.querySelector('.nav-item.dropdown .dropdown-menu.show');
+                if (dropdownElement) {
+                    dropdownElement.classList.remove('show');
+                }
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="container-fluid position-relative p-0">
@@ -77,13 +92,14 @@ const Navbar = () => {
 
                         {/* Conditionally render Admin links */}
                         {isAuthenticated && role === 'admin' && (
-                            <div className="nav-item dropdown">
+                            <div className="nav-item dropdown" ref={dropdownRef}>
                                 <NavLink
                                     className="nav-link dropdown-toggle"
                                     to="/admin"
                                     role="button"
                                     data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                    aria-expanded="false"
+                                >
                                     Admin
                                 </NavLink>
                                 <ul className="dropdown-menu">
@@ -131,7 +147,7 @@ const Navbar = () => {
                     {/* Conditionally render profile button for both roles */}
                     {isAuthenticated && (
                         <NavLink to="/profile" onClick={onNavbarLinkClick} className="p-0">
-                            <img src={Profile} alt="Profile" style={{ height: '70px', width: '70px', background: 'white', borderRadius: '50%'  }} loading="lazy" />
+                            <img src={Profile} alt="Profile" style={{ height: '70px', width: '70px', background: 'white', borderRadius: '50%' }} loading="lazy" />
                         </NavLink>
                     )}
 
@@ -146,6 +162,6 @@ const Navbar = () => {
             {/* Navbar End */}
         </div>
     );
-}
+};
 
 export default Navbar;

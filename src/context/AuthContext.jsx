@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AuthContext = createContext();
 
@@ -32,11 +34,13 @@ export const AuthProvider = ({ children }) => {
       } else {
         setIsAuthenticated(false);
         setRole(null);
+        toast.error('Session expired. Please log in again.');
       }
     } catch (error) {
       console.error('Failed to fetch user data:', error);
       setIsAuthenticated(false);
       setRole(null);
+      toast.error('Failed to verify session. Please try again.');
     } finally {
       setLoading(false); // Done loading after the request
     }
@@ -65,15 +69,18 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
+        toast.success('Login successful!');
         setIsAuthenticated(true);
         setRole(data.role); // Assuming role is returned
         storeTokenInLs(data); // Store token
         return { success: true };
       } else {
+        toast.error(data.message || 'Login failed.');
         return { success: false, message: data.message || 'Login failed.' };
       }
     } catch (error) {
       console.error('Login failed:', error);
+      toast.error('An error occurred. Please try again.');
       return { success: false, message: 'An error occurred. Please try again.' };
     }
   };
@@ -89,12 +96,15 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(false);
         setRole(null);
         localStorage.removeItem('token'); // Remove the token if stored
+        toast.success('Logout successful!');
         return { success: true };
       } else {
+        toast.error('Logout failed.');
         return { success: false, message: 'Logout failed.' };
       }
     } catch (error) {
       console.error('Logout failed:', error);
+      toast.error('An error occurred. Please try again.');
       return { success: false, message: 'An error occurred. Please try again.' };
     }
   };
@@ -115,12 +125,15 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         setRole(data.role); // Assuming role is returned
         storeTokenInLs(data); // Store token
+        toast.success('Signup successful! Please check your email for confirmation.');
         return { success: true, email: formData.email };
       } else {
+        toast.error(data.message || 'Signup failed.');
         return { success: false, message: data.message || 'Signup failed.' };
       }
     } catch (error) {
       console.error('Error during signup:', error);
+      toast.error('An error occurred. Please try again.');
       return { success: false, message: 'An error occurred. Please try again.' };
     }
   };

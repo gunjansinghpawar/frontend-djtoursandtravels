@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Bill from '../Bill/Bill'; // Adjust the import path accordingly
 import ReactDOMServer from 'react-dom/server';
 
@@ -30,26 +30,26 @@ const Trips = () => {
         fetchTrips();
     }, []);
 
-    const filteredTrips = showAllTrips
-        ? trips
-        : trips.filter(trip => trip.reportedDate === selectedDate);
+    const filteredTrips = useMemo(() => {
+        return showAllTrips
+            ? trips
+            : trips.filter(trip => trip.reportedDate === selectedDate);
+    }, [trips, selectedDate, showAllTrips]);
 
-        const handlePrint = (trip) => {
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write('<html><head><title>Print Trips</title>');
-            printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />');
-            printWindow.document.write('</head><body>');
-        
-            const billMarkup = ReactDOMServer.renderToStaticMarkup(<Bill trip={trip} tripId={trip.id} />);
-            printWindow.document.write(billMarkup);
-        
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        };
-        
-        
-
+    const handlePrint = (trip) => {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write('<html><head><title>Print Trips</title>');
+        printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />');
+        printWindow.document.write('</head><body>');
+    
+        const billMarkup = ReactDOMServer.renderToStaticMarkup(<Bill trip={trip} tripId={trip.id} />);
+        printWindow.document.write(billMarkup);
+    
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    };
+    
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
     };
@@ -68,7 +68,7 @@ const Trips = () => {
 
     return (
         <>
-            <div className="container-fluid bg-primary py-5 mb-5 hero-header">
+            <div className="container-fluid bg-primary py-5 mb-5 hero-header overflow-hidden">
                 <div className="container py-5">
                     <div className="row justify-content-center py-5">
                         <div className="col-lg-10 pt-lg-5 mt-lg-5 text-center">
@@ -106,7 +106,7 @@ const Trips = () => {
                 </div>
             </div>
 
-            <div className="container-xxl py-5">
+            <div className="container-xxl py-5 overflow-x-scroll">
                 <div className="container">
                     <h2 className="text-center mb-4">Trip Details for {showAllTrips ? 'All Dates' : selectedDate}</h2>
                     <table className="table table-bordered table-striped">
@@ -152,13 +152,6 @@ const Trips = () => {
                     </table>
                 </div>
             </div>
-
-            {/* Hidden Bills for Printing */}
-            {filteredTrips.map(trip => (
-                <div id={`bill-${trip.id}`} style={{ display: 'none' }} key={trip.id}>
-                    <Bill trip={trip} />
-                </div>
-            ))}
         </>
     );
 };

@@ -138,7 +138,7 @@ const ProfilePage = () => {
                             <>
                                 <h6 className="section-title bg-white text-start text-primary pe-3">User Information</h6>
                                 {isEditing ? (
-                                    <div>
+                                    <div className='profile-edit'>
                                         <input
                                             type="text"
                                             name="name"

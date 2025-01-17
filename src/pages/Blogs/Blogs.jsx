@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const Blogs = () => {
-  const [blogs, setBlogs] = useState([]); // Correct typo here
+  const [blogs, setBlogs] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [loading, setLoading] = useState(true);
 
@@ -28,10 +28,6 @@ const Blogs = () => {
     setVisibleCount(visibleCount + 2);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       {/* Hero Header */}
@@ -42,9 +38,15 @@ const Blogs = () => {
               <h1 className="display-3 text-white animated slideInDown">Blogs</h1>
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb justify-content-center">
-                  <li className="breadcrumb-item"><a href="#" className="text-white">Home</a></li>
-                  <li className="breadcrumb-item"><a href="#" className="text-white">Pages</a></li>
-                  <li className="breadcrumb-item text-white active" aria-current="page">Blogs</li>
+                  <li className="breadcrumb-item">
+                    <a href="#" className="text-white">Home</a>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <a href="#" className="text-white">Pages</a>
+                  </li>
+                  <li className="breadcrumb-item text-white active" aria-current="page">
+                    Blogs
+                  </li>
                 </ol>
               </nav>
             </div>
@@ -60,17 +62,30 @@ const Blogs = () => {
             <h1 className="mb-5">Latest Posts</h1>
           </div>
           <div className="row g-4">
-            {blogs.slice(0, visibleCount).map(blog => (
-              <div key={blog._id} className="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
-                <div className="bg-light text-dark p-4 rounded">
-                  <h4>{blog.blogTitle}</h4> {/* Access blogTitle */}
-                  <p>{blog.blogContent}</p> {/* Access blogContent */}
-                  {blog.image && <img src={blog.image} alt={blog.blogTitle} className="img-fluid" />}
+            {loading ? (
+              // Show a loading skeleton or spinner
+              Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
+                  <div className="bg-light text-dark p-4 rounded">
+                    <div className="skeleton skeleton-title mb-3" style={{ height: '20px', width: '60%' }}></div>
+                    <div className="skeleton skeleton-content" style={{ height: '15px', width: '80%' }}></div>
+                    <div className="skeleton skeleton-content mt-2" style={{ height: '15px', width: '90%' }}></div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              blogs.slice(0, visibleCount).map(blog => (
+                <div key={blog._id} className="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
+                  <div className="bg-light text-dark p-4 rounded">
+                    <h4>{blog.blogTitle}</h4>
+                    <p>{blog.blogContent}</p>
+                    {blog.image && <img src={blog.image} alt={blog.blogTitle} className="img-fluid" />}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-          {visibleCount < blogs.length && (
+          {visibleCount < blogs.length && !loading && (
             <div className="text-center mt-4">
               <button className="btn btn-primary" onClick={loadMoreBlogs}>
                 Read More

@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from './context/ProtectedRoute'; 
 import { useState, useEffect } from 'react';
-import './App.css'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Ensure Toastify styles are loaded
+import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import Topbar from './components/Topbar/Topbar';
 import Home from './pages/Home/Home';
@@ -19,32 +20,27 @@ import Bookings from './pages/Admin/Admin-Routes/Admin-Trip-Details/Bookings/Boo
 import Profile from './pages/Profile/Profile';
 import Logout from './pages/Logout/Logout';
 import Otp from './pages/Otp/Otp';
+import ProtectedRoute from './context/ProtectedRoute';
+import Loading from './Loading';
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadApp = async () => {
-      await new Promise((resolve) => resolve());
+      // Simulate loading delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setLoading(false);
+
+      // Example: Show a welcome toast on app load
+      toast.success('Welcome to DJ Tours & Travels!');
     };
 
     loadApp();
   }, []);
 
   if (loading) {
-    return (
-      <div className="loader-container">
-        <div className="loader">
-          <div className="red bar"></div>
-          <div className="orange bar"></div>
-          <div className="yellow bar"></div>
-          <div className="green bar"></div>
-          <div className="blue bar"></div>
-          <div className="violet bar"></div>
-        </div>
-      </div>
-    ); // Show the CSS loader while loading
+    return <Loading />; // Show the loading screen while the app initializes
   }
 
   return (
@@ -52,6 +48,7 @@ function App() {
       <Topbar />
       <Navbar />
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
         <Route path="/about" element={<About />} />
@@ -72,22 +69,56 @@ function App() {
           }
         />
         <Route
-          path="/admin/*" // Assuming you want to protect all admin routes
+          path="/admin/users"
           element={
             <ProtectedRoute requiredRole="admin">
-              {/* Wrap the admin routes with the ProtectedRoute */}
-              <Routes>
-                <Route path="/users" element={<Users />} />
-                <Route path="/addblogs" element={<AddBlogs />} />
-                <Route path="/addtrip" element={<AddTrip />} />
-                <Route path="/bookings" element={<Bookings />} />
-              </Routes>
+              <Users />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/addblogs"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AddBlogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/addtrip"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AddTrip />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/bookings"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Bookings />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fallback Route */}
         <Route path="*" element={<Home />} />
       </Routes>
       <Footer />
+
+      {/* Toastify Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }

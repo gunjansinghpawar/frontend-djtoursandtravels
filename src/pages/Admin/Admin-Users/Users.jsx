@@ -69,10 +69,10 @@ const Users = () => {
       <div className="container-xxl py-5">
         <div className="container">
           <h2 className="text-center mb-4 text-primary">
-            Total Users: {contact.length}
+            Total Contact: {contact.length}
           </h2>
 
-          {loading && <div className="text-center">Loading users...</div>}
+          {loading && <div className="text-center">Loading Contact...</div>}
 
           {error && <div className="text-center text-danger">{error}</div>}
 
