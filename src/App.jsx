@@ -19,7 +19,7 @@ import AddTrip from './pages/Admin/Admin-Routes/Admin-Trip-Details/Trip-Add/AddT
 import Bookings from './pages/Admin/Admin-Routes/Admin-Trip-Details/Bookings/Bookings';
 import Profile from './pages/Profile/Profile';
 import Logout from './pages/Logout/Logout';
-import Otp from './pages/Otp/Otp';
+import Otp from './pages/OTP/Otp';
 import ProtectedRoute from './context/ProtectedRoute';
 import Loading from './Loading';
 
