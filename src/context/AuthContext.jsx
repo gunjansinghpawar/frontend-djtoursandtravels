@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const API_URL = import.meta.env.BACKEND_PORT;
+const API_URL = import.meta.env.BACKEND_PORT|| 'http://localhost:3000/api';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

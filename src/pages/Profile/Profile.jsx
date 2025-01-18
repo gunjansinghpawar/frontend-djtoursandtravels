@@ -2,7 +2,7 @@ import { useState, useEffect,useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Profile from '../../assets/profile.jpg';
 import { AuthContext } from '../../context/AuthContext';
-const API_URL = import.meta.env.BACKEND_PORT;
+const API_URL = import.meta.env.BACKEND_PORT|| 'http://localhost:3000/api';
 
 const ProfilePage = () => {
     const [user, setUser] = useState(null);

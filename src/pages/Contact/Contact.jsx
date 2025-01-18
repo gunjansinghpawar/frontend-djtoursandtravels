@@ -1,6 +1,6 @@
-import { ApiProvider } from '@reduxjs/toolkit/query/react';
+
 import { useState } from 'react';
-const API_URL = import.meta.env.BACKEND_PORT;
+const API_URL = import.meta.env.BACKEND_PORT|| 'http://localhost:3000/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({

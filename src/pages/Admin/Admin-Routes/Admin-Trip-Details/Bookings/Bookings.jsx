@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import Bill from '../Bill/Bill'; // Adjust the import path accordingly
 import ReactDOMServer from 'react-dom/server';
-const API_URL = import.meta.env.BACKEND_PORT;
+const API_URL = import.meta.env.BACKEND_PORT|| 'http://localhost:3000/api';
 
 const Trips = () => {
     const [trips, setTrips] = useState([]);

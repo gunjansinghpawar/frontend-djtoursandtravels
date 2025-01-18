@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-const API_URL = import.meta.env.BACKEND_PORT;
+const API_URL = import.meta.env.BACKEND_PORT || 'http://localhost:3000/api';
 const Users = () => {
   const [contact, setContact] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,6 +9,7 @@ const Users = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+  // Helkli0
 
   const fetchUsers = async () => {
     setLoading(true);
