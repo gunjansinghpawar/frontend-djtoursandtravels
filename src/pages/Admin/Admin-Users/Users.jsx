@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-const API_URL = import.meta.env.VITE_BACKEND_PORT || 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_BACKEND_PORT ;
 const Users = () => {
   const [contact, setContact] = useState([]);
   const [loading, setLoading] = useState(true);
