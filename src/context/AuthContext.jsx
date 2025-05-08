@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { VITE_BACKEND_PORT } from '../URLS';
+import { VITE_VITE_BACKEND_PORT } from '../URLS';
 export const AuthContext = createContext();
 import Loading from '../Loading'
 
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`${VITE_BACKEND_PORT}/user/me`, {
+      const response = await fetch(`${VITE_VITE_BACKEND_PORT}/user/me`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch(`${VITE_BACKEND_PORT}/user/login`, {
+      const response = await fetch(`${VITE_VITE_BACKEND_PORT}/user/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch(`${VITE_BACKEND_PORT}/user/logout`, {
+      const response = await fetch(`${VITE_VITE_BACKEND_PORT}/user/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (formData) => {
     try {
-      const response = await fetch(`${VITE_BACKEND_PORT}/user/register`, {
+      const response = await fetch(`${VITE_VITE_BACKEND_PORT}/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

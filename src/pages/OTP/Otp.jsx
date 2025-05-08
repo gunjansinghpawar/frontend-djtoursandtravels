@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-const API_URL = import.meta.env.BACKEND_PORT|| 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_BACKEND_PORT|| 'http://localhost:3000/api';
 
 const Otp = () => {
     const [otp, setOtp] = useState(new Array(6).fill(''));
